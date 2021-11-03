@@ -1,5 +1,6 @@
 <?php
 
+// are its change
 
 //funcs
 function startsWith ($string, $startString)
