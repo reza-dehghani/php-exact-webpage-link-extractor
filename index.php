@@ -1,6 +1,7 @@
 <?php
 
-// are its change
+// specific arrays iterators
+$mp3s = array();
 
 //funcs
 function startsWith ($string, $startString)
@@ -33,7 +34,7 @@ $dom = new DOMDocument;
 //Get all links. You could also use any other tag name here,
 //like 'img' or 'table', to extract other tags.
 $links = $dom->getElementsByTagName('a');
-
+echo " ALL LINKS <hr/>";
 //Iterate over the extracted links and display their URLs
 foreach ($links as $link){
     //Extract and show the "href" attribute.
@@ -53,12 +54,28 @@ foreach ($links as $link){
             $link = $url.$link;
         }
 
-    echo $link , "<br>";
+        echo $link , "<br>";
+    $linklength = strlen($link);
+    if ($link[$linklength - 1] == "3" && $link[$linklength - 2] == "p" && $link[$linklength - 3] == "m" && $link[$linklength - 4] == ".")
+        array_push($mp3s, $link);
+    }
 
 }
 
-        }
+echo "<hr/>MP3 Links:<br/>";
+$mp3_f = fopen("mp3links.txt", "w");
+if(!$mp3_f)
+    echo("cannot save links into file");
+else{
+    foreach($mp3s as $mp3){
+        fwrite($mp3_f, $mp3."\r\n");
+        // echo $mp3, "<br/>";
+    }
     
+}
+fclose($mp3_f);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -68,6 +85,10 @@ foreach ($links as $link){
 
     </head>
     <body>
+        <section>
+            <h3>See/Download link files</h3>
+            <a href="mp3links.txt">Download mp3 links file</a>
+        </section>
         <section>
             <formgroup>
                 <form>
